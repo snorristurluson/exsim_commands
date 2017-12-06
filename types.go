@@ -11,6 +11,11 @@ type ParamsReceivedSetTargetLocation struct {
 	Location Vector3 `json:"location"`
 }
 
+type ParamsReceivedSetAttribute struct {
+	Attribute string `json:"attribute"`
+	Value float64 `json:"value"`
+}
+
 type Command struct {
 	Command string `json:"command"`
 	Params interface{} `json:"params"`
@@ -39,6 +44,8 @@ type ShipData struct {
 	TypeId     int64 `json:"typeid"`
 	Position Vector3 `json:"position"`
 	InRange  []int64 `json:"inrange"`
+	NewInRange  []int64 `json:"newinrange"`
+	GoneFromRange  []int64 `json:"gonefromrange"`
 }
 
 type State struct {
@@ -88,6 +95,21 @@ func NewSetShipTargetLocationCommand(shipid int64, loc Vector3) (*Command) {
 		Location: loc,
 	}
 	return NewCommand("setshiptargetlocation", params)
+}
+
+type ParamsSetShipAttribute struct {
+	ShipId int64 `json:"shipid"`
+	Attribute string `json:"attribute"`
+	Value float64 `json:"value"`
+}
+
+func NewSetShipAttributeCommand(shipid int64, attr string, value float64) (*Command) {
+	params := &ParamsSetShipAttribute{
+		ShipId: shipid,
+		Attribute: attr,
+		Value: value,
+	}
+	return NewCommand("setshipattribute", params)
 }
 
 type ParamsStepSimulation struct {
